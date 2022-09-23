@@ -1,6 +1,6 @@
 [package]
-name = "thiserror"
-version = "1.0.35"
+name = "enum_display"
+version = "0.1.0"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 categories = ["rust-patterns"]
 description = "derive(EnumDisplay)"
