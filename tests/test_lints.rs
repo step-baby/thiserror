@@ -1,4 +1,4 @@
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
 pub use std::error::Error;
 
@@ -6,12 +6,12 @@ pub use std::error::Error;
 fn test_unused_qualifications() {
     #![deny(unused_qualifications)]
 
-    // Expansion of derive(Error) macro can't know whether something like
+    // Expansion of derive(EnumDisplay) macro can't know whether something like
     // std::error::Error is already imported in the caller's scope so it must
     // suppress unused_qualifications.
 
-    #[derive(Debug, Error)]
-    #[error("...")]
+    #[derive(Debug, EnumDisplay)]
+    #[display("...")]
     pub struct MyError;
 
     let _: MyError;

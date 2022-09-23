@@ -1,9 +1,9 @@
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 pub enum Error {
     What {
-        #[error("...")]
+        #[display("...")]
         io: std::io::Error,
     },
 }

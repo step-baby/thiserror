@@ -2,7 +2,7 @@
 
 use std::fmt::{self, Display};
 use std::io;
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
 macro_rules! unimplemented_display {
     ($ty:ty) => {
@@ -14,31 +14,31 @@ macro_rules! unimplemented_display {
     };
 }
 
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 struct BracedError {
     msg: String,
     pos: usize,
 }
 
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 struct TupleError(String, usize);
 
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 struct UnitError;
 
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 struct WithSource {
     #[source]
     cause: io::Error,
 }
 
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 struct WithAnyhow {
     #[source]
     cause: anyhow::Error,
 }
 
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 enum EnumError {
     Braced {
         #[source]

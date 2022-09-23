@@ -6,40 +6,40 @@
 #[cfg(thiserror_nightly_testing)]
 pub mod structs {
     use std::backtrace::Backtrace;
-    use thiserror::Error;
+    use thiserror::EnumDisplay;
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct OptSourceNoBacktrace {
         #[source]
         source: Option<anyhow::Error>,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct OptSourceAlwaysBacktrace {
         #[source]
         source: Option<anyhow::Error>,
         backtrace: Backtrace,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct NoSourceOptBacktrace {
         #[backtrace]
         backtrace: Option<Backtrace>,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct AlwaysSourceOptBacktrace {
         source: anyhow::Error,
         #[backtrace]
         backtrace: Option<Backtrace>,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct OptSourceOptBacktrace {
         #[source]
         source: Option<anyhow::Error>,
@@ -51,20 +51,20 @@ pub mod structs {
 #[cfg(thiserror_nightly_testing)]
 pub mod enums {
     use std::backtrace::Backtrace;
-    use thiserror::Error;
+    use thiserror::EnumDisplay;
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum OptSourceNoBacktrace {
-        #[error("...")]
+        #[display("...")]
         Test {
             #[source]
             source: Option<anyhow::Error>,
         },
     }
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum OptSourceAlwaysBacktrace {
-        #[error("...")]
+        #[display("...")]
         Test {
             #[source]
             source: Option<anyhow::Error>,
@@ -72,18 +72,18 @@ pub mod enums {
         },
     }
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum NoSourceOptBacktrace {
-        #[error("...")]
+        #[display("...")]
         Test {
             #[backtrace]
             backtrace: Option<Backtrace>,
         },
     }
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum AlwaysSourceOptBacktrace {
-        #[error("...")]
+        #[display("...")]
         Test {
             source: anyhow::Error,
             #[backtrace]
@@ -91,9 +91,9 @@ pub mod enums {
         },
     }
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum OptSourceOptBacktrace {
-        #[error("...")]
+        #[display("...")]
         Test {
             #[source]
             source: Option<anyhow::Error>,

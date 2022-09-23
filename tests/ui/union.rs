@@ -1,6 +1,6 @@
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
-#[derive(Error)]
+#[derive(EnumDisplay)]
 pub union U {
     msg: &'static str,
     num: usize,

@@ -1,23 +1,23 @@
 #![allow(clippy::iter_cloned_collect, clippy::option_if_let_else)]
 
 use std::fmt::Display;
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
 // Some of the elaborate cases from the rcc codebase, which is a C compiler in
 // Rust. https://github.com/jyn514/rcc/blob/0.8.0/src/data/error.rs
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 pub enum CompilerError {
-    #[error("cannot shift {} by {maximum} or more bits (got {current})", if *.is_left { "left" } else { "right" })]
+    #[display("cannot shift {} by {maximum} or more bits (got {current})", if *.is_left { "left" } else { "right" })]
     TooManyShiftBits {
         is_left: bool,
         maximum: u64,
         current: u64,
     },
 
-    #[error("#error {}", (.0).iter().copied().collect::<Vec<_>>().join(" "))]
+    #[display("#error {}", (.0).iter().copied().collect::<Vec<_>>().join(" "))]
     User(Vec<&'static str>),
 
-    #[error("overflow while parsing {}integer literal",
+    #[display("overflow while parsing {}integer literal",
         if let Some(signed) = .is_signed {
             if *signed { "signed "} else { "unsigned "}
         } else {
@@ -26,7 +26,7 @@ pub enum CompilerError {
     )]
     IntegerOverflow { is_signed: Option<bool> },
 
-    #[error("overflow while parsing {}integer literal", match .is_signed {
+    #[display("overflow while parsing {}integer literal", match .is_signed {
         Some(true) => "signed ",
         Some(false) => "unsigned ",
         None => "",
@@ -35,9 +35,9 @@ pub enum CompilerError {
 }
 
 // Examples drawn from Rustup.
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 pub enum RustupError {
-    #[error(
+    #[display(
         "toolchain '{name}' does not contain component {component}{}",
         .suggestion
             .as_ref()

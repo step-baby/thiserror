@@ -1,8 +1,8 @@
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
-#[derive(Error, Debug)]
-#[error(transparent)]
-#[error("...")]
+#[derive(EnumDisplay, Debug)]
+#[display(transparent)]
+#[display("...")]
 pub struct Error(anyhow::Error);
 
 fn main() {}

@@ -1,11 +1,11 @@
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
 macro_rules! error_type {
     ($name:ident, $what:expr) => {
-        // Use #[error("invalid {}", $what)] instead.
+        // Use #[display("invalid {}", $what)] instead.
 
-        #[derive(Error, Debug)]
-        #[error(concat!("invalid ", $what))]
+        #[derive(EnumDisplay, Debug)]
+        #[display(concat!("invalid ", $what))]
         pub struct $name;
     };
 }

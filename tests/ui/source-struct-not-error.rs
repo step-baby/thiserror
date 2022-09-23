@@ -1,10 +1,10 @@
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
 #[derive(Debug)]
 struct NotError;
 
-#[derive(Error, Debug)]
-#[error("...")]
+#[derive(EnumDisplay, Debug)]
+#[display("...")]
 pub struct ErrorStruct {
     source: NotError,
 }

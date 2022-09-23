@@ -1,24 +1,24 @@
 use ref_cast::RefCast;
 use std::fmt::Display;
 use std::path::{Path, PathBuf};
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
-#[derive(Error, Debug)]
-#[error("failed to read '{file}'")]
+#[derive(EnumDisplay, Debug)]
+#[display("failed to read '{file}'")]
 struct StructPathBuf {
     file: PathBuf,
 }
 
-#[derive(Error, Debug, RefCast)]
+#[derive(EnumDisplay, Debug, RefCast)]
 #[repr(C)]
-#[error("failed to read '{file}'")]
+#[display("failed to read '{file}'")]
 struct StructPath {
     file: Path,
 }
 
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 enum EnumPathBuf {
-    #[error("failed to read '{0}'")]
+    #[display("failed to read '{0}'")]
     Read(PathBuf),
 }
 

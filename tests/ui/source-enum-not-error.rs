@@ -1,10 +1,10 @@
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
 #[derive(Debug)]
 pub struct NotError;
 
-#[derive(Error, Debug)]
-#[error("...")]
+#[derive(EnumDisplay, Debug)]
+#[display("...")]
 pub enum ErrorEnum {
     Broken {
         source: NotError,

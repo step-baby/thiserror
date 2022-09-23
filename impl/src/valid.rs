@@ -20,7 +20,7 @@ impl Struct<'_> {
             if self.fields.len() != 1 {
                 return Err(Error::new_spanned(
                     transparent.original,
-                    "#[error(transparent)] requires exactly one field",
+                    "#[display(transparent)] requires exactly one field",
                 ));
             }
             if let Some(source) = self.fields.iter().find_map(|f| f.attrs.source) {
@@ -48,7 +48,7 @@ impl Enum<'_> {
             {
                 return Err(Error::new_spanned(
                     variant.original,
-                    "missing #[error(\"...\")] display attribute",
+                    "missing #[display(\"...\")] display attribute",
                 ));
             }
         }
@@ -75,7 +75,7 @@ impl Variant<'_> {
             if self.fields.len() != 1 {
                 return Err(Error::new_spanned(
                     self.original,
-                    "#[error(transparent)] requires exactly one field",
+                    "#[display(transparent)] requires exactly one field",
                 ));
             }
             if let Some(source) = self.fields.iter().find_map(|f| f.attrs.source) {
@@ -98,7 +98,7 @@ impl Field<'_> {
         if let Some(display) = &self.attrs.display {
             return Err(Error::new_spanned(
                 display.original,
-                "not expected here; the #[error(...)] attribute belongs on top of a struct or an enum variant",
+                "not expected here; the #[display(...)] attribute belongs on top of a struct or an enum variant",
             ));
         }
         Ok(())
@@ -128,7 +128,7 @@ fn check_non_field_attrs(attrs: &Attrs) -> Result<()> {
         if attrs.transparent.is_some() {
             return Err(Error::new_spanned(
                 display.original,
-                "cannot have both #[error(transparent)] and a display attribute",
+                "cannot have both #[display(transparent)] and a display attribute",
             ));
         }
     }
@@ -166,7 +166,7 @@ fn check_field_attrs(fields: &[Field]) -> Result<()> {
         if let Some(transparent) = field.attrs.transparent {
             return Err(Error::new_spanned(
                 transparent.original,
-                "#[error(transparent)] needs to go outside the enum or struct, not on an individual field",
+                "#[display(transparent)] needs to go outside the enum or struct, not on an individual field",
             ));
         }
         has_backtrace |= field.is_backtrace();

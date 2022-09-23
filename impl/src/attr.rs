@@ -54,7 +54,7 @@ pub fn get(input: &[Attribute]) -> Result<Attrs> {
     };
 
     for attr in input {
-        if attr.path.is_ident("error") {
+        if attr.path.is_ident("display") {
             parse_error_attribute(&mut attrs, attr)?;
         } else if attr.path.is_ident("source") {
             require_empty_attribute(attr)?;
@@ -91,7 +91,7 @@ fn parse_error_attribute<'a>(attrs: &mut Attrs<'a>, attr: &'a Attribute) -> Resu
             if attrs.transparent.is_some() {
                 return Err(Error::new_spanned(
                     attr,
-                    "duplicate #[error(transparent)] attribute",
+                    "duplicate #[display(transparent)] attribute",
                 ));
             }
             attrs.transparent = Some(Transparent {
@@ -111,7 +111,7 @@ fn parse_error_attribute<'a>(attrs: &mut Attrs<'a>, attr: &'a Attribute) -> Resu
         if attrs.display.is_some() {
             return Err(Error::new_spanned(
                 attr,
-                "only one #[error(...)] attribute is allowed",
+                "only one #[display(...)] attribute is allowed",
             ));
         }
         attrs.display = Some(display);

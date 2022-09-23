@@ -1,23 +1,23 @@
 use std::error::Error as StdError;
 use std::io;
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
-#[derive(Error, Debug)]
-#[error("implicit source")]
+#[derive(EnumDisplay, Debug)]
+#[display("implicit source")]
 pub struct ImplicitSource {
     source: io::Error,
 }
 
-#[derive(Error, Debug)]
-#[error("explicit source")]
+#[derive(EnumDisplay, Debug)]
+#[display("explicit source")]
 pub struct ExplicitSource {
     source: String,
     #[source]
     io: io::Error,
 }
 
-#[derive(Error, Debug)]
-#[error("boxed source")]
+#[derive(EnumDisplay, Debug)]
+#[display("boxed source")]
 pub struct BoxedSource {
     #[source]
     source: Box<dyn StdError + Send + 'static>,
@@ -49,7 +49,7 @@ fn test_boxed_source() {
 
 macro_rules! error_from_macro {
     ($($variants:tt)*) => {
-        #[derive(Error)]
+        #[derive(EnumDisplay)]
         #[derive(Debug)]
         pub enum MacroSource {
             $($variants)*
@@ -60,6 +60,6 @@ macro_rules! error_from_macro {
 // Test that we generate impls with the proper hygiene
 #[rustfmt::skip]
 error_from_macro! {
-    #[error("Something")]
+    #[display("Something")]
     Variant(#[from] io::Error)
 }

@@ -1,10 +1,10 @@
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
 #[derive(Debug)]
 struct NoDisplay;
 
-#[derive(Error, Debug)]
-#[error("thread: {thread}")]
+#[derive(EnumDisplay, Debug)]
+#[display("thread: {thread}")]
 pub struct Error {
     thread: NoDisplay,
 }

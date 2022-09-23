@@ -1,5 +1,5 @@
 use std::fmt::Display;
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
 fn assert<T: Display>(expected: &str, value: T) {
     assert_eq!(expected, value.to_string());
@@ -7,8 +7,8 @@ fn assert<T: Display>(expected: &str, value: T) {
 
 #[test]
 fn test_braced() {
-    #[derive(Error, Debug)]
-    #[error("braced error: {msg}")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("braced error: {msg}")]
     struct Error {
         msg: String,
     }
@@ -19,8 +19,8 @@ fn test_braced() {
 
 #[test]
 fn test_braced_unused() {
-    #[derive(Error, Debug)]
-    #[error("braced error")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("braced error")]
     struct Error {
         extra: usize,
     }
@@ -30,8 +30,8 @@ fn test_braced_unused() {
 
 #[test]
 fn test_tuple() {
-    #[derive(Error, Debug)]
-    #[error("tuple error: {0}")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("tuple error: {0}")]
     struct Error(usize);
 
     assert("tuple error: 0", Error(0));
@@ -39,8 +39,8 @@ fn test_tuple() {
 
 #[test]
 fn test_unit() {
-    #[derive(Error, Debug)]
-    #[error("unit error")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("unit error")]
     struct Error;
 
     assert("unit error", Error);
@@ -48,13 +48,13 @@ fn test_unit() {
 
 #[test]
 fn test_enum() {
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     enum Error {
-        #[error("braced error: {id}")]
+        #[display("braced error: {id}")]
         Braced { id: usize },
-        #[error("tuple error: {0}")]
+        #[display("tuple error: {0}")]
         Tuple(usize),
-        #[error("unit error")]
+        #[display("unit error")]
         Unit,
     }
 
@@ -65,8 +65,8 @@ fn test_enum() {
 
 #[test]
 fn test_constants() {
-    #[derive(Error, Debug)]
-    #[error("{MSG}: {id:?} (code {CODE:?})")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("{MSG}: {id:?} (code {CODE:?})")]
     struct Error {
         id: &'static str,
     }
@@ -79,11 +79,11 @@ fn test_constants() {
 
 #[test]
 fn test_inherit() {
-    #[derive(Error, Debug)]
-    #[error("{0}")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("{0}")]
     enum Error {
         Some(&'static str),
-        #[error("other error")]
+        #[display("other error")]
         Other(&'static str),
     }
 
@@ -93,8 +93,8 @@ fn test_inherit() {
 
 #[test]
 fn test_brace_escape() {
-    #[derive(Error, Debug)]
-    #[error("fn main() {{}}")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("fn main() {{}}")]
     struct Error;
 
     assert("fn main() {}", Error);
@@ -102,16 +102,16 @@ fn test_brace_escape() {
 
 #[test]
 fn test_expr() {
-    #[derive(Error, Debug)]
-    #[error("1 + 1 = {}", 1 + 1)]
+    #[derive(EnumDisplay, Debug)]
+    #[display("1 + 1 = {}", 1 + 1)]
     struct Error;
     assert("1 + 1 = 2", Error);
 }
 
 #[test]
 fn test_nested() {
-    #[derive(Error, Debug)]
-    #[error("!bool = {}", not(.0))]
+    #[derive(EnumDisplay, Debug)]
+    #[display("!bool = {}", not(.0))]
     struct Error(bool);
 
     #[allow(clippy::trivially_copy_pass_by_ref)]
@@ -124,8 +124,8 @@ fn test_nested() {
 
 #[test]
 fn test_match() {
-    #[derive(Error, Debug)]
-    #[error("{}: {0}", match .1 {
+    #[derive(EnumDisplay, Debug)]
+    #[display("{}: {0}", match .1 {
         Some(n) => format!("error occurred with {}", n),
         None => "there was an empty error".to_owned(),
     })]
@@ -144,8 +144,8 @@ fn test_match() {
 #[test]
 fn test_void() {
     #[allow(clippy::empty_enum)]
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub enum Error {}
 
     let _: Error;
@@ -153,8 +153,8 @@ fn test_void() {
 
 #[test]
 fn test_mixed() {
-    #[derive(Error, Debug)]
-    #[error("a={a} :: b={} :: c={c} :: d={d}", 1, c = 2, d = 3)]
+    #[derive(EnumDisplay, Debug)]
+    #[display("a={a} :: b={} :: c={c} :: d={d}", 1, c = 2, d = 3)]
     struct Error {
         a: usize,
         d: usize,
@@ -165,11 +165,11 @@ fn test_mixed() {
 
 #[test]
 fn test_ints() {
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     enum Error {
-        #[error("error {0}")]
+        #[display("error {0}")]
         Tuple(usize, usize),
-        #[error("error {0}", '?')]
+        #[display("error {0}", '?')]
         Struct { v: usize },
     }
 
@@ -179,8 +179,8 @@ fn test_ints() {
 
 #[test]
 fn test_trailing_comma() {
-    #[derive(Error, Debug)]
-    #[error(
+    #[derive(EnumDisplay, Debug)]
+    #[display(
         "error {0}",
     )]
     #[rustfmt::skip]
@@ -196,8 +196,8 @@ fn test_field() {
         data: usize,
     }
 
-    #[derive(Error, Debug)]
-    #[error("{}", .0.data)]
+    #[derive(EnumDisplay, Debug)]
+    #[display("{}", .0.data)]
     struct Error(Inner);
 
     assert("0", Error(Inner { data: 0 }));
@@ -209,14 +209,14 @@ fn test_macro_rules() {
 
     macro_rules! decl_error {
         ($variant:ident($value:ident)) => {
-            #[derive(Debug, Error)]
+            #[derive(Debug, EnumDisplay)]
             pub enum Error0 {
-                #[error("{0:?}")]
+                #[display("{0:?}")]
                 $variant($value),
             }
 
-            #[derive(Debug, Error)]
-            #[error("{0:?}")]
+            #[derive(Debug, EnumDisplay)]
+            #[display("{0:?}")]
             pub enum Error1 {
                 $variant($value),
             }
@@ -231,8 +231,8 @@ fn test_macro_rules() {
 
 #[test]
 fn test_raw() {
-    #[derive(Error, Debug)]
-    #[error("braced raw error: {r#fn}")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("braced raw error: {r#fn}")]
     struct Error {
         r#fn: &'static str,
     }
@@ -242,9 +242,9 @@ fn test_raw() {
 
 #[test]
 fn test_raw_enum() {
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     enum Error {
-        #[error("braced raw error: {r#fn}")]
+        #[display("braced raw error: {r#fn}")]
         Braced { r#fn: &'static str },
     }
 
@@ -253,9 +253,9 @@ fn test_raw_enum() {
 
 #[test]
 fn test_raw_conflict() {
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     enum Error {
-        #[error("braced raw error: {r#func}, {func}", func = "U")]
+        #[display("braced raw error: {r#func}, {func}", func = "U")]
         Braced { r#func: &'static str },
     }
 
@@ -264,8 +264,8 @@ fn test_raw_conflict() {
 
 #[test]
 fn test_keyword() {
-    #[derive(Error, Debug)]
-    #[error("error: {type}", type = 1)]
+    #[derive(EnumDisplay, Debug)]
+    #[display("error: {type}", type = 1)]
     struct Error;
 
     assert("error: 1", Error);

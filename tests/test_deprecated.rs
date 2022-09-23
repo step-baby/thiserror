@@ -1,10 +1,10 @@
 #![deny(deprecated, clippy::all, clippy::pedantic)]
 
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 pub enum Error {
     #[deprecated]
-    #[error("...")]
+    #[display("...")]
     Deprecated,
 }

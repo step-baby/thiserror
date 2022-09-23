@@ -1,8 +1,8 @@
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 pub enum Error {
-    #[error("...")]
+    #[display("...")]
     A(usize),
     B(usize),
 }

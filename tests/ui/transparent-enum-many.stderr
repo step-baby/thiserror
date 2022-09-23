@@ -1,6 +1,6 @@
-error: #[error(transparent)] requires exactly one field
+error: #[display(transparent)] requires exactly one field
  --> tests/ui/transparent-enum-many.rs:5:5
   |
-5 | /     #[error(transparent)]
+5 | /     #[display(transparent)]
 6 | |     Other(anyhow::Error, String),
   | |________________________________^

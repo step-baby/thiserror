@@ -1,7 +1,7 @@
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
-#[derive(Error, Debug)]
-#[error(transparent)]
+#[derive(EnumDisplay, Debug)]
+#[display(transparent)]
 pub struct Error {
     inner: anyhow::Error,
     what: String,

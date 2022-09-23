@@ -17,20 +17,20 @@
 //!
 //! ```rust
 //! # use std::io;
-//! use thiserror::Error;
+//! use thiserror::EnumDisplay;
 //!
-//! #[derive(Error, Debug)]
+//! #[derive(EnumDisplay, Debug)]
 //! pub enum DataStoreError {
-//!     #[error("data store disconnected")]
+//!     #[display("data store disconnected")]
 //!     Disconnect(#[from] io::Error),
-//!     #[error("the data for key `{0}` is not available")]
+//!     #[display("the data for key `{0}` is not available")]
 //!     Redaction(String),
-//!     #[error("invalid header (expected {expected:?}, found {found:?})")]
+//!     #[display("invalid header (expected {expected:?}, found {found:?})")]
 //!     InvalidHeader {
 //!         expected: String,
 //!         found: String,
 //!     },
-//!     #[error("unknown data store error")]
+//!     #[display("unknown data store error")]
 //!     Unknown,
 //! }
 //! ```
@@ -48,26 +48,26 @@
 //!   structs.
 //!
 //! - A `Display` impl is generated for your error if you provide
-//!   `#[error("...")]` messages on the struct or each variant of your enum, as
+//!   `#[display("...")]` messages on the struct or each variant of your enum, as
 //!   shown above in the example.
 //!
 //!   The messages support a shorthand for interpolating fields from the error.
 //!
-//!     - `#[error("{var}")]`&ensp;⟶&ensp;`write!("{}", self.var)`
-//!     - `#[error("{0}")]`&ensp;⟶&ensp;`write!("{}", self.0)`
-//!     - `#[error("{var:?}")]`&ensp;⟶&ensp;`write!("{:?}", self.var)`
-//!     - `#[error("{0:?}")]`&ensp;⟶&ensp;`write!("{:?}", self.0)`
+//!     - `#[display("{var}")]`&ensp;⟶&ensp;`write!("{}", self.var)`
+//!     - `#[display("{0}")]`&ensp;⟶&ensp;`write!("{}", self.0)`
+//!     - `#[display("{var:?}")]`&ensp;⟶&ensp;`write!("{:?}", self.var)`
+//!     - `#[display("{0:?}")]`&ensp;⟶&ensp;`write!("{:?}", self.0)`
 //!
 //!   These shorthands can be used together with any additional format args,
 //!   which may be arbitrary expressions. For example:
 //!
 //!   ```rust
 //!   # use std::i32;
-//!   # use thiserror::Error;
+//!   # use thiserror::EnumDisplay;
 //!   #
-//!   #[derive(Error, Debug)]
+//!   #[derive(EnumDisplay, Debug)]
 //!   pub enum Error {
-//!       #[error("invalid rdo_lookahead_frames {0} (expected < {})", i32::MAX)]
+//!       #[display("invalid rdo_lookahead_frames {0} (expected < {})", i32::MAX)]
 //!       InvalidLookahead(u32),
 //!   }
 //!   ```
@@ -77,7 +77,7 @@
 //!   as `.0`.
 //!
 //!   ```rust
-//!   # use thiserror::Error;
+//!   # use thiserror::EnumDisplay;
 //!   #
 //!   # fn first_char(s: &String) -> char {
 //!   #     s.chars().next().unwrap()
@@ -89,11 +89,11 @@
 //!   #     hi: usize,
 //!   # }
 //!   #
-//!   #[derive(Error, Debug)]
+//!   #[derive(EnumDisplay, Debug)]
 //!   pub enum Error {
-//!       #[error("first letter must be lowercase but was {:?}", first_char(.0))]
+//!       #[display("first letter must be lowercase but was {:?}", first_char(.0))]
 //!       WrongCase(String),
-//!       #[error("invalid index {idx}, expected at least {} and at most {}", .limits.lo, .limits.hi)]
+//!       #[display("invalid index {idx}, expected at least {} and at most {}", .limits.lo, .limits.hi)]
 //!       OutOfBounds { idx: usize, limits: Limits },
 //!   }
 //!   ```
@@ -107,7 +107,7 @@
 //!
 //!   ```rust
 //!   # const IGNORE: &str = stringify! {
-//!   #[derive(Error, Debug)]
+//!   #[derive(EnumDisplay, Debug)]
 //!   pub enum MyError {
 //!       Io {
 //!           #[from]
@@ -130,9 +130,9 @@
 //!
 //!   ```rust
 //!   # use std::fmt::{self, Display};
-//!   # use thiserror::Error;
+//!   # use thiserror::EnumDisplay;
 //!   #
-//!   #[derive(Error, Debug)]
+//!   #[derive(EnumDisplay, Debug)]
 //!   pub struct MyError {
 //!       msg: String,
 //!       #[source]  // optional if field name is `source`
@@ -153,7 +153,7 @@
 //!   # const IGNORE: &str = stringify! {
 //!   use std::backtrace::Backtrace;
 //!
-//!   #[derive(Error, Debug)]
+//!   #[derive(EnumDisplay, Debug)]
 //!   pub struct MyError {
 //!       msg: String,
 //!       backtrace: Backtrace,  // automatically detected
@@ -167,7 +167,7 @@
 //!
 //!   ```rust
 //!   # const IGNORE: &str = stringify! {
-//!   #[derive(Error, Debug)]
+//!   #[derive(EnumDisplay, Debug)]
 //!   pub enum MyError {
 //!       Io {
 //!           #[backtrace]
@@ -183,15 +183,15 @@
 //!   "anything else" variant.
 //!
 //!   ```
-//!   # use thiserror::Error;
+//!   # use thiserror::EnumDisplay;
 //!   #
-//!   #[derive(Error, Debug)]
+//!   #[derive(EnumDisplay, Debug)]
 //!   pub enum MyError {
 //!       # /*
 //!       ...
 //!       # */
 //!
-//!       #[error(transparent)]
+//!       #[display(transparent)]
 //!       Other(#[from] anyhow::Error),  // source and Display delegate to anyhow::Error
 //!   }
 //!   ```

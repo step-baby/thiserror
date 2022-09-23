@@ -1,7 +1,7 @@
 #![allow(clippy::needless_late_init)]
 
 use std::fmt::{self, Debug, Display};
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
 pub struct NoFormat;
 
@@ -35,9 +35,9 @@ impl Display for DebugAndDisplay {
 //     where
 //         Self: Debug + Display;
 //
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 pub enum EnumDebugGeneric<E> {
-    #[error("{0:?}")]
+    #[display("{0:?}")]
     FatalError(E),
 }
 
@@ -50,9 +50,9 @@ pub enum EnumDebugGeneric<E> {
 //         EnumDebugGeneric<E>: Error + 'static,
 //         Self: Debug + Display;
 //
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 pub enum EnumFromGeneric<E> {
-    #[error("enum from generic")]
+    #[display("enum from generic")]
     Source(#[from] EnumDebugGeneric<E>),
 }
 
@@ -69,13 +69,13 @@ pub enum EnumFromGeneric<E> {
 //     where
 //         Self: Debug + Display;
 //
-#[derive(Error)]
+#[derive(EnumDisplay)]
 pub enum EnumCompound<HasDisplay, HasDebug, HasNeither> {
-    #[error("{0} {1:?}")]
+    #[display("{0} {1:?}")]
     DisplayDebug(HasDisplay, HasDebug),
-    #[error("{0}")]
+    #[display("{0}")]
     Display(HasDisplay, HasNeither),
-    #[error("{1:?}")]
+    #[display("{1:?}")]
     Debug(HasNeither, HasDebug),
 }
 
@@ -110,9 +110,9 @@ fn test_display_enum_compound() {
 //         E: Error,
 //         Self: Debug + Display;
 //
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 pub enum EnumTransparentGeneric<E> {
-    #[error(transparent)]
+    #[display(transparent)]
     Other(E),
 }
 
@@ -126,8 +126,8 @@ pub enum EnumTransparentGeneric<E> {
 //     where
 //         Self: Debug + Display;
 //
-#[derive(Error, Debug)]
-#[error("{underlying:?}")]
+#[derive(EnumDisplay, Debug)]
+#[display("{underlying:?}")]
 pub struct StructDebugGeneric<E> {
     pub underlying: E,
 }
@@ -139,7 +139,7 @@ pub struct StructDebugGeneric<E> {
 //         StructDebugGeneric<E>: Error + 'static,
 //         Self: Debug + Display;
 //
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 pub struct StructFromGeneric<E> {
     #[from]
     pub source: StructDebugGeneric<E>,
@@ -156,6 +156,6 @@ pub struct StructFromGeneric<E> {
 //         E: Error,
 //         Self: Debug + Display;
 //
-#[derive(Error, Debug)]
-#[error(transparent)]
+#[derive(EnumDisplay, Debug)]
+#[display(transparent)]
 pub struct StructTransparentGeneric<E>(E);

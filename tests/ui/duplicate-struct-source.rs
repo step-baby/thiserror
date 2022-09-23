@@ -1,6 +1,6 @@
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 pub struct ErrorStruct {
     #[source]
     a: std::io::Error,

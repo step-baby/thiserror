@@ -1,19 +1,19 @@
 use anyhow::anyhow;
 use std::error::Error as _;
 use std::io;
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
 #[test]
 fn test_transparent_struct() {
-    #[derive(Error, Debug)]
-    #[error(transparent)]
+    #[derive(EnumDisplay, Debug)]
+    #[display(transparent)]
     struct Error(ErrorKind);
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     enum ErrorKind {
-        #[error("E0")]
+        #[display("E0")]
         E0,
-        #[error("E1")]
+        #[display("E1")]
         E1(#[from] io::Error),
     }
 
@@ -29,11 +29,11 @@ fn test_transparent_struct() {
 
 #[test]
 fn test_transparent_enum() {
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     enum Error {
-        #[error("this failed")]
+        #[display("this failed")]
         This,
-        #[error(transparent)]
+        #[display(transparent)]
         Other(anyhow::Error),
     }
 
@@ -47,8 +47,8 @@ fn test_transparent_enum() {
 
 #[test]
 fn test_anyhow() {
-    #[derive(Error, Debug)]
-    #[error(transparent)]
+    #[derive(EnumDisplay, Debug)]
+    #[display(transparent)]
     struct Any(#[from] anyhow::Error);
 
     let error = Any::from(anyhow!("inner").context("outer"));
@@ -58,15 +58,15 @@ fn test_anyhow() {
 
 #[test]
 fn test_non_static() {
-    #[derive(Error, Debug)]
-    #[error(transparent)]
+    #[derive(EnumDisplay, Debug)]
+    #[display(transparent)]
     struct Error<'a> {
         inner: ErrorKind<'a>,
     }
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     enum ErrorKind<'a> {
-        #[error("unexpected token: {:?}", token)]
+        #[display("unexpected token: {:?}", token)]
         Unexpected { token: &'a str },
     }
 

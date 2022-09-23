@@ -1,22 +1,22 @@
 use std::fmt::Debug;
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
-#[derive(Error, Debug)]
-#[error("error")]
+#[derive(EnumDisplay, Debug)]
+#[display("error")]
 struct Error<'a>(#[from] Inner<'a>);
 
-#[derive(Error, Debug)]
-#[error("{0}")]
+#[derive(EnumDisplay, Debug)]
+#[display("{0}")]
 struct Inner<'a>(&'a str);
 
-#[derive(Error, Debug)]
+#[derive(EnumDisplay, Debug)]
 enum Enum<'a> {
-    #[error("error")]
+    #[display("error")]
     Foo(#[from] Generic<&'a str>),
 }
 
-#[derive(Error, Debug)]
-#[error("{0:?}")]
+#[derive(EnumDisplay, Debug)]
+#[display("{0:?}")]
 struct Generic<T: Debug>(T);
 
 fn main() -> Result<(), Error<'static>> {

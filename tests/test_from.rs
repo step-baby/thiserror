@@ -1,30 +1,30 @@
 use std::io;
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
-#[derive(Error, Debug)]
-#[error("...")]
+#[derive(EnumDisplay, Debug)]
+#[display("...")]
 pub struct ErrorStruct {
     #[from]
     source: io::Error,
 }
 
-#[derive(Error, Debug)]
-#[error("...")]
+#[derive(EnumDisplay, Debug)]
+#[display("...")]
 pub struct ErrorStructOptional {
     #[from]
     source: Option<io::Error>,
 }
 
-#[derive(Error, Debug)]
-#[error("...")]
+#[derive(EnumDisplay, Debug)]
+#[display("...")]
 pub struct ErrorTuple(#[from] io::Error);
 
-#[derive(Error, Debug)]
-#[error("...")]
+#[derive(EnumDisplay, Debug)]
+#[display("...")]
 pub struct ErrorTupleOptional(#[from] Option<io::Error>);
 
-#[derive(Error, Debug)]
-#[error("...")]
+#[derive(EnumDisplay, Debug)]
+#[display("...")]
 pub enum ErrorEnum {
     Test {
         #[from]
@@ -32,8 +32,8 @@ pub enum ErrorEnum {
     },
 }
 
-#[derive(Error, Debug)]
-#[error("...")]
+#[derive(EnumDisplay, Debug)]
+#[display("...")]
 pub enum ErrorEnumOptional {
     Test {
         #[from]
@@ -41,8 +41,8 @@ pub enum ErrorEnumOptional {
     },
 }
 
-#[derive(Error, Debug)]
-#[error("...")]
+#[derive(EnumDisplay, Debug)]
+#[display("...")]
 pub enum Many {
     Any(#[from] anyhow::Error),
     Io(#[from] io::Error),

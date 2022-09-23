@@ -3,15 +3,15 @@
     feature(error_generic_member_access, provide_any)
 )]
 
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
-#[derive(Error, Debug)]
-#[error("...")]
+#[derive(EnumDisplay, Debug)]
+#[display("...")]
 pub struct Inner;
 
 #[cfg(thiserror_nightly_testing)]
-#[derive(Error, Debug)]
-#[error("...")]
+#[derive(EnumDisplay, Debug)]
+#[display("...")]
 pub struct InnerBacktrace {
     backtrace: std::backtrace::Backtrace,
 }
@@ -23,37 +23,37 @@ pub mod structs {
     use std::backtrace::Backtrace;
     use std::error::Error;
     use std::sync::Arc;
-    use thiserror::Error;
+    use thiserror::EnumDisplay;
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct PlainBacktrace {
         backtrace: Backtrace,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct ExplicitBacktrace {
         #[backtrace]
         backtrace: Backtrace,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct OptBacktrace {
         #[backtrace]
         backtrace: Option<Backtrace>,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct ArcBacktrace {
         #[backtrace]
         backtrace: Arc<Backtrace>,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct BacktraceFrom {
         #[from]
         source: Inner,
@@ -61,16 +61,16 @@ pub mod structs {
         backtrace: Backtrace,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct CombinedBacktraceFrom {
         #[from]
         #[backtrace]
         source: InnerBacktrace,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct OptBacktraceFrom {
         #[from]
         source: Inner,
@@ -78,8 +78,8 @@ pub mod structs {
         backtrace: Option<Backtrace>,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct ArcBacktraceFrom {
         #[from]
         source: Inner,
@@ -87,15 +87,15 @@ pub mod structs {
         backtrace: Arc<Backtrace>,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct AnyhowBacktrace {
         #[backtrace]
         source: anyhow::Error,
     }
 
-    #[derive(Error, Debug)]
-    #[error("...")]
+    #[derive(EnumDisplay, Debug)]
+    #[display("...")]
     pub struct BoxDynErrorBacktrace {
         #[backtrace]
         source: Box<dyn Error>,
@@ -157,8 +157,8 @@ pub mod structs {
     fn test_provide_name_collision() {
         use std::any::Provider;
 
-        #[derive(Error, Debug)]
-        #[error("...")]
+        #[derive(EnumDisplay, Debug)]
+        #[display("...")]
         struct MyError {
             #[source]
             #[backtrace]
@@ -176,44 +176,44 @@ pub mod enums {
     use std::any;
     use std::backtrace::Backtrace;
     use std::sync::Arc;
-    use thiserror::Error;
+    use thiserror::EnumDisplay;
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum PlainBacktrace {
-        #[error("...")]
+        #[display("...")]
         Test { backtrace: Backtrace },
     }
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum ExplicitBacktrace {
-        #[error("...")]
+        #[display("...")]
         Test {
             #[backtrace]
             backtrace: Backtrace,
         },
     }
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum OptBacktrace {
-        #[error("...")]
+        #[display("...")]
         Test {
             #[backtrace]
             backtrace: Option<Backtrace>,
         },
     }
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum ArcBacktrace {
-        #[error("...")]
+        #[display("...")]
         Test {
             #[backtrace]
             backtrace: Arc<Backtrace>,
         },
     }
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum BacktraceFrom {
-        #[error("...")]
+        #[display("...")]
         Test {
             #[from]
             source: Inner,
@@ -222,9 +222,9 @@ pub mod enums {
         },
     }
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum CombinedBacktraceFrom {
-        #[error("...")]
+        #[display("...")]
         Test {
             #[from]
             #[backtrace]
@@ -232,9 +232,9 @@ pub mod enums {
         },
     }
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum OptBacktraceFrom {
-        #[error("...")]
+        #[display("...")]
         Test {
             #[from]
             source: Inner,
@@ -243,9 +243,9 @@ pub mod enums {
         },
     }
 
-    #[derive(Error, Debug)]
+    #[derive(EnumDisplay, Debug)]
     pub enum ArcBacktraceFrom {
-        #[error("...")]
+        #[display("...")]
         Test {
             #[from]
             source: Inner,

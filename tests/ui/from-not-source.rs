@@ -1,4 +1,4 @@
-use thiserror::Error;
+use thiserror::EnumDisplay;
 
 #[derive(Debug, Error)]
 pub struct Error {

@@ -1,5 +1,5 @@
-error: cannot have both #[error(transparent)] and a display attribute
+error: cannot have both #[display(transparent)] and a display attribute
  --> tests/ui/transparent-display.rs:5:1
   |
-5 | #[error("...")]
+5 | #[display("...")]
   | ^^^^^^^^^^^^^^^
